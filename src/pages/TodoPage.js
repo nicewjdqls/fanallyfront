@@ -20,11 +20,11 @@ const TodoPage = ({ user, setUser }) => {
     getTasks();
   }, []);
   
-  const logoutTodo = () => { // 인자를 받지 않음
-    sessionStorage.removeItem("token"); // 토큰 제거
-    setUser(null); // user 상태를 null로 설정
-    api.defaults.headers["authorization"] = ""; // Authorization 헤더 초기화
-    navigate("/login"); // 로그인 페이지로 리다이렉트
+  const logoutTodo = () => {  
+    sessionStorage.removeItem("token"); 
+    setUser(null); 
+    api.defaults.headers["authorization"] = ""; 
+    navigate("/login"); 
   };
   
   const addTodo = async () => {

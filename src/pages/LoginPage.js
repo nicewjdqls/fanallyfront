@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // useEffect 추가
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import api from "../utils/api";
@@ -10,26 +10,31 @@ const LoginPage = ({ user, setUser }) => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const storedToken = sessionStorage.getItem("token");
+    if (storedToken) {
+      navigate("/"); // 메인 페이지로 리다이렉트
+    }
+  }, [navigate]);
+
   const handleLogin = async (event) => {
     event.preventDefault();
-
+  
     try {
       const response = await api.post('/user/login', { email, password });
-
+  
       if (response.status === 200) {
         setUser(response.data.user);
         sessionStorage.setItem("token", response.data.token);
         api.defaults.headers["authorization"] = "Bearer " + response.data.token;
         setError("");
-        navigate("/");
+        navigate("/"); 
       } 
       throw new Error(response.data.message);
     } catch (error) {
-      setError(error.message); 
+      setError(error.message);
     }
   };
-
-
 
   return (
     <div className="display-center">
